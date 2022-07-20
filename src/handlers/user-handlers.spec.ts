@@ -45,6 +45,13 @@ describe('Given the users resources', () => {
       expect(response.status).toBe(409)
       expect(response.body.message).toBe(`The email ${data.email} is already registered`)
     })
-    
+    it('should be able to create a new user', async () => {
+      const data = {
+        name: 'Jhon Doe',
+        email: 'any@mail.com'
+      }
+      const response = await request(app).post('/users').send(data)
+      expect(response.status).toBe(201)
+    })
   })
 })
