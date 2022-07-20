@@ -44,5 +44,22 @@ describe('Given the tasks reources', () => {
       expect(JSON.stringify(response.body)).toEqual(JSON.stringify(tasks))
     })
   })
-
+  describe('POST /tasks', () => {
+    it('should be able to create a new task', async () => {
+      const data = {
+        title: 'Task 3',
+        description: 'Task 3 description',
+        userId: user.id
+      }
+      const response = await request(app).post('/tasks').send(data)
+      const taskInDatabase = await prisma.task.findMany({
+        where: {
+          id: response.body.id
+        }
+      })
+      expect(response.status).toBe(201)
+      expect(taskInDatabase).toBeTruthy()
+      expect(JSON.stringify(taskInDatabase)).toEqual(JSON.stringify([response.body]))
+    })
+  })
 })
