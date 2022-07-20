@@ -5,6 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "pretest": "docker compose up -d database_test",
+    "test": "jest -i",
+    "posttedt": "docker compose stop database_test",
     "dev": "tsnd --respawn --transpile-only --ignore-watch node_modules --exit-child --clear src/server.ts"
   },
   "keywords": [],
