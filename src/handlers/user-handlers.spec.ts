@@ -27,13 +27,24 @@ describe('Given the users resources', () => {
       expect(response.status).toBe(200)
       expect(response.body).toMatchObject(users)
     })
-
-    it('should be create user', async () => {
-      const response = await request(app).post('/users').send({
-        name: 'any name',
-        email: 'any@mail.com'
-      })
-      expect(response.status).toBe(201)
+  }
+  )
+  describe('POST /users', () => {
+    afterEach(async () => {
+      await prisma.user.deleteMany({})
     })
+    it('should be able throw an error when the user is already registered', async () => {
+      const data = {
+        name: 'Jhon Doe',
+        email: 'contact@jhondoe.com'
+      }
+
+      await request(app).post('/users').send(data)
+      const response = await request(app).post('/users').send(data)
+
+      expect(response.status).toBe(409)
+      expect(response.body.message).toBe(`The email ${data.email} is already registered`)
+    })
+    
   })
 })
