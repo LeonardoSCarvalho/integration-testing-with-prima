@@ -27,5 +27,13 @@ describe('Given the users resources', () => {
       expect(response.status).toBe(200)
       expect(response.body).toMatchObject(users)
     })
+
+    it('should be create user', async () => {
+      const response = await request(app).post('/users').send({
+        name: 'any name',
+        email: 'any@mail.com'
+      })
+      expect(response.status).toBe(201)
+    })
   })
 })
